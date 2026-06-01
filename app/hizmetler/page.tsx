@@ -12,8 +12,9 @@ const DRK = "#2D1A2E";
 const HIZMETLER = [
   { slug:"temizlik-bakim",  no:"01", ad:"Temizlik & Bakım",   kisa:"Buhar temizlik, derin cila, bağcık değişimi dahil.", fiyat:"₺800+",   sure:"1-2 gün", accent: PRI, items:["Buhar temizlik","Derin cila","Bağcık değişimi","UV sterilizasyon"] },
   { slug:"boya-restorasyon",no:"02", ad:"Boya & Restorasyon", kisa:"Profesyonel boya ve renk yenileme. Yıpranmışı sıfırlar.", fiyat:"₺1.200+",sure:"2-3 gün", accent: MUV, items:["Renk yenileme","Çizik tamiri","Deri boyama","Koruyucu kaplama"] },
-  { slug:"taban-degisimi",  no:"03", ad:"Taban Değişimi",     kisa:"Dış taban komple değişimi. Her tür ayakkabı.", fiyat:"₺600+",   sure:"2-3 gün", accent: PRI, items:["Dış taban","İç taban","Topuk tamiri","Yapıştırma"] },
+  { slug:"taban-degisimi",  no:"03", ad:"Taban Değişimi",     kisa:"Dış taban komple değişimi. Her tür ayakkabı.", fiyat:"₺950+",   sure:"2-3 gün", accent: PRI, items:["Dış taban","İç taban","Topuk tamiri","Yapıştırma"] },
   { slug:"dikis-onarim",    no:"04", ad:"Dikiş & Onarım",     kisa:"Yırtık dikişler, çoraplık ve fort tamiri.", fiyat:"₺250+",   sure:"1-2 gün", accent: MUV, items:["Dikiş tamiri","Çoraplık onarım","Fort tamiri","Fermuar"] },
+  { slug:"file-tamiri",     no:"05", ad:"File Tamiri",         kisa:"Hasarlı file kısımların onarımı ve yenilenmesi.", fiyat:"₺750+", sure:"1-2 gün", accent: STN, items:["File onarımı","Yırtık tamiri","Renk uyumu","Dayanıklılık kaplaması"] },
 ];
 
 export default function HizmetlerPage() {

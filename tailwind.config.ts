@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["var(--font-serif)", "Playfair Display", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "DM Sans", "system-ui", "sans-serif"],
+      },
       animation: {
         marquee: "marquee 25s linear infinite",
       },

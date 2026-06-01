@@ -53,12 +53,13 @@ const ILCELER  = ["Kadıköy","Üsküdar","Ataşehir","Ümraniye"];
 const HIZMETLER = [
   { id:"bakim",      label:"Temizlik & Bakım",   desc:"Buhar temizlik, cila, bağcık değişimi",  fiyat:800,  accent: PRI },
   { id:"boya",       label:"Boya & Restorasyon", desc:"Profesyonel boya ve renk yenileme",      fiyat:1200, accent: MUV },
-  { id:"taban",      label:"Taban Değişimi",      desc:"Dış taban komple değişimi",             fiyat:600,  accent: PRI },
+  { id:"taban",      label:"Taban Değişimi",      desc:"Dış taban komple değişimi",             fiyat:950,  accent: PRI },
   { id:"dikiş",      label:"Dikiş Tamiri",        desc:"Yırtık ve sökük dikişlerin tamiri",     fiyat:400,  accent: MUV },
-  { id:"ic_taban",   label:"İç Taban Değişimi",   desc:"İç taban komple değişimi",              fiyat:400,  accent: PRI },
-  { id:"coraplık",   label:"Çoraplık Tamiri",     desc:"Arka iç kısım onarımı",                 fiyat:350,  accent: MUV },
-  { id:"fort",       label:"Fort Tamiri",          desc:"Arka dik kısım tamiri",                 fiyat:300,  accent: PRI },
+  { id:"ic_taban",   label:"İç Taban Değişimi",   desc:"İç taban komple değişimi",              fiyat:750,  accent: PRI },
+  { id:"coraplık",   label:"Çoraplık Tamiri",     desc:"Arka iç kısım onarımı",                 fiyat:650,  accent: MUV },
+  { id:"fort",       label:"Fort Tamiri",          desc:"Arka dik kısım tamiri",                 fiyat:600,  accent: PRI },
   { id:"yapıştırma", label:"Yapıştırma",           desc:"Taban yapıştırma ve sökük onarımı",    fiyat:250,  accent: MUV },
+  { id:"file",       label:"File Tamiri",          desc:"Hasarlı file kısımların onarımı",       fiyat:750,  accent: STN },
 ];
 
 const RENK_RENKLER: Record<string, string> = {
@@ -332,18 +333,9 @@ function AyakkabiKarti({
 
 export default function SiparisPage() {
   const router = useRouter();
-  const [authChecked, setAuthChecked] = useState(false);
+  const [authChecked, setAuthChecked] = useState(true);
 
-  // ── Auth guard: giriş yapılmamışsa /auth'a yönlendir ──
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        router.replace("/auth?redirect=/siparis");
-      } else {
-        setAuthChecked(true);
-      }
-    });
-  }, []);
+  // Auth guard kaldırıldı — misafir kullanıcılar da sipariş verebilir
 
   const [step, setStep] = useState(1);
   const [ayakkabiListesi, setAyakkabiListesi] = useState<Ayakkabi[]>([bos()]);
