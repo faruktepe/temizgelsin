@@ -373,6 +373,7 @@ export default function SiparisPage() {
   const [referralValid, setReferralValid] = useState<null|boolean>(null);
   const [referralDiscount, setReferralDiscount] = useState(0);
   const [referralMsg, setReferralMsg] = useState("");
+  const [express, setExpress] = useState(false);
 
   // Yükleniyorken bekletme ekranı
   if (!authChecked) {
@@ -404,6 +405,9 @@ export default function SiparisPage() {
   const indirimliMax = kampanya ? Math.round(toplamMax * 0.8) : toplamMax;
   const refMin = referralValid && referralDiscount > 0 ? Math.round(indirimliMin*(1-referralDiscount/100)) : indirimliMin;
   const refMax = referralValid && referralDiscount > 0 ? Math.round(indirimliMax*(1-referralDiscount/100)) : indirimliMax;
+  const expressMin = express ? Math.round(refMin * 1.3) : refMin;
+  const expressMax = express ? Math.round(refMax * 1.3) : refMax;
+  const teslimatSure = express ? "24 saat içinde" : "1-3 iş günü";
 
   const checkReferral = async (code: string) => {
     if (!code.trim()) { setReferralValid(null); setReferralDiscount(0); setReferralMsg(""); return; }
@@ -433,7 +437,8 @@ export default function SiparisPage() {
       color: ayakkabiListesi.map(a => a.renk).join(", "),
       shoe_type: ayakkabiListesi.map(a => a.tur).join(", "),
       services: ayakkabiListesi.flatMap(a => a.hizmetler),
-      price: `₺${refMin} - ₺${refMax}`,
+      price: `₺${expressMin} - ₺${expressMax}`,
+      express: express,
       price_choice: iletisim.tercih,
       customer_info: { ad:iletisim.ad, telefon:iletisim.telefon, ilce:iletisim.ilce, adres:iletisim.adres },
       status: iletisim.tercih==="arasin" ? "Teklif Bekleniyor" : "Onaylandı",
@@ -533,8 +538,8 @@ export default function SiparisPage() {
 
             {/* Toplam özet */}
             {toplamMin > 0 && (
-              <div className="p-4 rounded-2xl mb-6" style={{background:`rgba(91,45,110,0.06)`, border:`2px solid ${PRI}`}}>
-                <div className="flex justify-between items-center">
+              <div className="p-4 rounded-2xl mb-4" style={{background:`rgba(91,45,110,0.06)`, border:`2px solid ${PRI}`}}>
+                <div className="flex justify-between items-center mb-3">
                   <div>
                     <p className="text-xs font-semibold" style={{color:`rgba(45,26,46,0.5)`}}>
                       {ayakkabiListesi.length} çift · {tumHizmetler.length} hizmet
@@ -542,8 +547,33 @@ export default function SiparisPage() {
                     </p>
                     {kampanya && <p className="text-xs font-bold mt-0.5" style={{color:PRI}}>🎉 3+ hizmet — %20 indirim!</p>}
                   </div>
-                  <p className="text-xl font-black" style={{color:PRI}}>₺{indirimliMin.toLocaleString()} — ₺{indirimliMax.toLocaleString()}</p>
+                  <div className="text-right">
+                    <p className="text-xl font-black" style={{color:PRI}}>₺{expressMin.toLocaleString()} — ₺{expressMax.toLocaleString()}</p>
+                    <p className="text-xs mt-0.5" style={{color:`rgba(45,26,46,0.45)`}}>Teslim: {teslimatSure}</p>
+                  </div>
                 </div>
+                {/* Express toggle */}
+                <button
+                  type="button"
+                  onClick={() => setExpress(e => !e)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl transition-all"
+                  style={{
+                    background: express ? `rgba(91,45,110,0.12)` : `rgba(45,26,46,0.04)`,
+                    border: `1.5px solid ${express ? PRI : `rgba(45,26,46,0.12)`}`,
+                  }}>
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-base">⚡</span>
+                    <div className="text-left">
+                      <p className="text-xs font-bold" style={{color: express ? PRI : `rgba(45,26,46,0.7)`}}>Express — 24 saatte teslim</p>
+                      <p className="text-[11px]" style={{color:`rgba(45,26,46,0.4)`}}>+%30 — öncelikli slot, acil işlem</p>
+                    </div>
+                  </div>
+                  <div className="w-9 h-5 rounded-full relative transition-all shrink-0"
+                    style={{background: express ? PRI : `rgba(45,26,46,0.15)`}}>
+                    <div className="absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-all duration-200"
+                      style={{left: express ? "calc(100% - 18px)" : "2px"}} />
+                  </div>
+                </button>
               </div>
             )}
 
@@ -596,7 +626,7 @@ export default function SiparisPage() {
             </div>
 
             <div className="space-y-4">
-              {!loggedInUser && fieldError === "ad" && (
+              {!loggedInUser && fieldError2 === "ad" && (
                 <p className="text-xs font-bold mb-2 px-3 py-1.5 rounded-lg" style={{color:"rgba(107,39,55,1)", background:"rgba(107,39,55,0.08)", border:"1px solid rgba(107,39,55,0.3)"}}>⚠️ Ad Soyad alanı boş bırakılamaz.</p>
               )}
               {loggedInUser ? (

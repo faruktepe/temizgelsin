@@ -13,6 +13,7 @@ const DRK = "#2D1A2E";
 const NAV_LINKS = [
   { href: "/",              label: "Ana Sayfa"  },
   { href: "/hizmetler",     label: "Hizmetler"  },
+  { href: "/paketler",      label: "Paketler"   },
   { href: "/galeri",        label: "Galeri"     },
   { href: "/blog",          label: "Blog"       },
   { href: "/sss",           label: "SSS"        },
