@@ -374,6 +374,8 @@ export default function SiparisPage() {
   const [referralDiscount, setReferralDiscount] = useState(0);
   const [referralMsg, setReferralMsg] = useState("");
   const [express, setExpress] = useState(false);
+  const [photos, setPhotos] = useState<{ file: File; preview: string; url?: string }[]>([]);
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   // Yükleniyorken bekletme ekranı
   if (!authChecked) {
@@ -419,6 +421,31 @@ export default function SiparisPage() {
     setReferralLoading(false);
   };
 
+  const addPhotos = (files: FileList) => {
+    const allowed = Array.from(files).slice(0, 5 - photos.length);
+    const newPhotos = allowed.map(file => ({ file, preview: URL.createObjectURL(file) }));
+    setPhotos(prev => [...prev, ...newPhotos]);
+  };
+
+  const removePhoto = (i: number) => {
+    URL.revokeObjectURL(photos[i].preview);
+    setPhotos(prev => prev.filter((_, idx) => idx !== i));
+  };
+
+  const uploadPhotos = async (orderNo: string): Promise<string[]> => {
+    const urls: string[] = [];
+    for (const p of photos) {
+      const ext = p.file.name.split(".").pop() || "jpg";
+      const path = `${orderNo}/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("order-photos").upload(path, p.file, { upsert: true });
+      if (!error) {
+        const { data } = supabase.storage.from("order-photos").getPublicUrl(path);
+        urls.push(data.publicUrl);
+      }
+    }
+    return urls;
+  };
+
   const handleSubmit = async () => {
     if (!iletisim.ad) { setError("Ad Soyad alanı boş bırakılamaz."); setFieldError2("ad"); scrollTo(adRef); return; }
     if (!iletisim.telefon) { setError("Telefon numarası boş bırakılamaz."); setFieldError2("telefon"); scrollTo(telefonRef); return; }
@@ -428,6 +455,9 @@ export default function SiparisPage() {
     if (!seciliSlot) { setError("Lütfen bir teslim saati seçin."); slotRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
     setLoading(true); setError("");
     const no = generateOrderNumber();
+    setPhotoUploading(photos.length > 0);
+    const photoUrls = photos.length > 0 ? await uploadPhotos(no) : [];
+    setPhotoUploading(false);
     const { data: { session } } = await supabase.auth.getSession();
     const { error: dbError } = await supabase.from("orders").insert({
       order_number: no,
@@ -449,6 +479,7 @@ export default function SiparisPage() {
       referral_discount: referralValid ? referralDiscount : 0,
       shoes_count: ayakkabiListesi.length,
       shoes_detail: JSON.stringify(ayakkabiListesi),
+      photo_urls: photoUrls,
     });
     if (dbError) { setError(`Hata: ${dbError.message}`); setLoading(false); return; }
     setOrderNumber(no); setStep(3); setLoading(false);
@@ -576,6 +607,60 @@ export default function SiparisPage() {
                 </button>
               </div>
             )}
+
+            {/* ── Fotoğraf yükleme (isteğe bağlı) ── */}
+            <div className="rounded-2xl border-2 p-5 mb-4" style={{borderColor: STN, background:"#fff"}}>
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-sm font-black" style={{color:DRK}}>Fotoğraf <span className="font-normal text-xs" style={{color:`rgba(45,26,46,0.4)`}}>(isteğe bağlı)</span></p>
+                  <p className="text-xs mt-0.5" style={{color:`rgba(45,26,46,0.45)`}}>Ayakkabılarınızın fotoğrafını gönderin — daha doğru fiyat, daha iyi bakım.</p>
+                </div>
+                {photos.length < 5 && (
+                  <label className="cursor-pointer shrink-0">
+                    <div className="px-3 py-2 rounded-full border-2 text-xs font-bold transition-all"
+                      style={{borderColor:PRI, color:PRI, background:`rgba(91,45,110,0.06)`}}>
+                      + Fotoğraf
+                    </div>
+                    <input type="file" accept="image/*" multiple className="hidden"
+                      onChange={e => e.target.files && addPhotos(e.target.files)} />
+                  </label>
+                )}
+              </div>
+              {photos.length === 0 ? (
+                <label className="cursor-pointer block">
+                  <div className="border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-8 transition-all hover:border-opacity-60"
+                    style={{borderColor:MUV, background:`rgba(191,165,184,0.05)`}}>
+                    <span className="text-3xl mb-2">📷</span>
+                    <p className="text-sm font-medium" style={{color:`rgba(45,26,46,0.4)`}}>Fotoğraf seç veya sürükle bırak</p>
+                    <p className="text-xs mt-0.5" style={{color:`rgba(45,26,46,0.3)`}}>Maks 5 fotoğraf · JPG, PNG, HEIC</p>
+                  </div>
+                  <input type="file" accept="image/*" multiple className="hidden"
+                    onChange={e => e.target.files && addPhotos(e.target.files)} />
+                </label>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {photos.map((p, i) => (
+                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden"
+                      style={{border:`1.5px solid ${STN}`}}>
+                      <img src={p.preview} alt="" className="w-full h-full object-cover" />
+                      <button onClick={() => removePhoto(i)}
+                        className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                        style={{background:"rgba(0,0,0,0.55)", color:"#fff"}}>
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  {photos.length < 5 && (
+                    <label className="cursor-pointer aspect-square rounded-xl border-2 border-dashed flex items-center justify-center"
+                      style={{borderColor:MUV, background:`rgba(191,165,184,0.05)`}}>
+                      <span className="text-2xl" style={{color:MUV}}>+</span>
+                      <input type="file" accept="image/*" multiple className="hidden"
+                        onChange={e => e.target.files && addPhotos(e.target.files)} />
+                    </label>
+                  )}
+                </div>
+              )}
+            </div>
 
             {error && (
               <div className="mb-4 p-4 rounded-2xl flex items-center gap-3"
@@ -795,7 +880,7 @@ export default function SiparisPage() {
               <button onClick={handleSubmit} disabled={loading}
                 className="flex-1 py-5 text-base font-bold rounded-full hover:opacity-90 transition-all disabled:opacity-50"
                 style={{...btnPri, boxShadow:`0 8px 24px rgba(91,45,110,0.3)`}}>
-                {loading ? "Gönderiliyor..." : "Siparişi Tamamla ✓"}
+                {photoUploading ? "Fotoğraflar yükleniyor..." : loading ? "Gönderiliyor..." : "Siparişi Tamamla ✓"}
               </button>
             </div>
           </div>

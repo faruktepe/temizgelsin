@@ -836,6 +836,8 @@ export default function AdminPage() {
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
+  const [notifying, setNotifying] = useState<string | null>(null);
+  const [notified, setNotified] = useState<Record<string, boolean>>({});
 
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("Tümü");
@@ -920,6 +922,32 @@ export default function AdminPage() {
     if (!confirm(`${orderNumber} numaralı sipariş silinsin mi?`)) return;
     await supabase.from("orders").delete().eq("id", id);
     setOrders((prev) => prev.filter((order) => order.id !== id));
+  };
+
+  const sendWhatsApp = async (order: Order) => {
+    const info = parseJSON<CustomerInfo>(order.customer_info, {});
+    if (!info.telefon) { alert("Müşteri telefonu bulunamadı."); return; }
+    setNotifying(order.id);
+    try {
+      const res = await fetch("/api/notify/whatsapp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderId: order.id,
+          status: order.status,
+          customerName: info.ad || "",
+          customerPhone: info.telefon,
+          orderNumber: order.order_number,
+        }),
+      });
+      const { waUrl } = await res.json();
+      window.open(waUrl, "_blank");
+      setNotified(prev => ({ ...prev, [order.id]: true }));
+      setTimeout(() => setNotified(prev => { const n = {...prev}; delete n[order.id]; return n; }), 5000);
+    } catch {
+      alert("Bildirim gönderilemedi.");
+    }
+    setNotifying(null);
   };
 
   const toggleGalleryItem = async (id: string, current: boolean) => {
@@ -1208,7 +1236,7 @@ export default function AdminPage() {
                             )}
                           </div>
 
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <select
                               value={order.status}
                               onChange={(e) => updateStatus(order.id, e.target.value)}
@@ -1218,6 +1246,19 @@ export default function AdminPage() {
                                 <option key={d}>{d}</option>
                               ))}
                             </select>
+
+                            <button
+                              onClick={() => sendWhatsApp(order)}
+                              disabled={notifying === order.id}
+                              className="rounded-xl border px-3 py-2 text-xs font-medium transition disabled:opacity-50"
+                              style={{
+                                borderColor: notified[order.id] ? "#16a34a40" : "rgba(0,150,60,0.25)",
+                                color: notified[order.id] ? "#16a34a" : "rgba(0,130,50,0.9)",
+                                background: notified[order.id] ? "rgba(22,163,74,0.07)" : "transparent",
+                              }}
+                            >
+                              {notifying === order.id ? "..." : notified[order.id] ? "✓ Gönderildi" : "📲 Bildir"}
+                            </button>
 
                             <button
                               onClick={() => deleteOrder(order.id, order.order_number)}
@@ -1301,6 +1342,24 @@ export default function AdminPage() {
                             <span className="font-medium text-black/75">Adres:</span> {info.adres}
                           </div>
                         ) : null}
+
+                        {(() => {
+                          const photoUrls = parseJSON<string[]>((order as unknown as {photo_urls: unknown}).photo_urls, []);
+                          if (!photoUrls.length) return null;
+                          return (
+                            <div className="mt-4">
+                              <p className="text-[11px] uppercase tracking-[0.14em] text-black/40 mb-2">Müşteri Fotoğrafları ({photoUrls.length})</p>
+                              <div className="flex flex-wrap gap-2">
+                                {photoUrls.map((url, i) => (
+                                  <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+                                    className="block w-20 h-20 rounded-xl overflow-hidden border border-stone-200 hover:opacity-80 transition">
+                                    <img src={url} alt={`Fotoğraf ${i+1}`} className="w-full h-full object-cover" />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })()}
                       </div>
                     );
                   })}

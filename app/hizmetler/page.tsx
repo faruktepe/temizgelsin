@@ -47,6 +47,7 @@ const HIZMETLER = [
     sure: "1–2 gün",
     bg: PRI,
     fg: MUV,
+    img: "/generated/closeup-fırça.webp",
     items: ["Buhar ile derin temizlik", "Profesyonel cila", "Bağcık değişimi", "UV sterilizasyon"],
     popular: true,
   },
@@ -59,6 +60,7 @@ const HIZMETLER = [
     sure: "2–3 gün",
     bg: DRK,
     fg: STN,
+    img: "/generated/closeup-boya.webp",
     items: ["Orijinal renk eşleştirme", "Deri yüzey onarımı", "Profesyonel boya", "Koruyucu vernik"],
     popular: false,
   },
@@ -71,6 +73,7 @@ const HIZMETLER = [
     sure: "2–3 gün",
     bg: STN,
     fg: DRK,
+    img: "/generated/closeup-taban.webp",
     items: ["Dış taban değişimi", "İç taban yenileme", "Topuk tamiri", "Her marka"],
     popular: false,
   },
@@ -83,6 +86,7 @@ const HIZMETLER = [
     sure: "1–2 gün",
     bg: MUV,
     fg: DRK,
+    img: "/generated/closeup-dikiş.webp",
     items: ["Dikiş tamiri", "Çoraplık onarım", "Fort tamiri", "Fermuar"],
     popular: false,
   },
@@ -95,6 +99,7 @@ const HIZMETLER = [
     sure: "1–2 gün",
     bg: BG,
     fg: PRI,
+    img: "/generated/texture-sole.webp",
     items: ["File onarımı", "Yırtık tamiri", "Renk uyumu", "Dayanıklılık kaplaması"],
     popular: false,
   },
@@ -211,7 +216,12 @@ export default function HizmetlerPage() {
                       : `0 2px 12px rgba(45,26,46,0.07)`,
                     minHeight: "240px",
                   }}>
-                  <div className="flex-1 p-7">
+                  {/* Close-up görsel — sağ alt köşe, blend mode ile eriyor */}
+                  <div className="absolute bottom-0 right-0 w-28 h-28 rounded-tl-2xl overflow-hidden pointer-events-none"
+                    style={{ opacity: isLight ? 0.18 : 0.12 }}>
+                    <img src={h.img} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 p-7 relative z-10">
                     {/* Numara + süre */}
                     <div className="flex items-center justify-between mb-5">
                       <span className="text-[11px] font-mono tracking-[0.3em]"

@@ -638,9 +638,9 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {[
-              { n: "01", img: "/generated/step-1-photo.webp", alt: "Fotoğraf gönder", t: "Fotoğraf at, fiyat al.", a: "WhatsApp'tan bir fotoğraf at. 10 dakikada fiyat verelim, karar tamamen sende.", href: `https://wa.me/${WHATSAPP}`, cta: "Fiyat Al →", ext: true },
-              { n: "02", img: "/generated/step-2-courier.webp", alt: "Kurye kapıya gelir", t: "Kapıda teslim.", a: "Kuryemiz kapına geliyor. Sen hiçbir yere gitme, tek adım atma.", href: "/siparis", cta: "Sipariş Ver →", ext: false },
-              { n: "03", img: "/generated/step-3-clean.webp", alt: "Tertemiz teslim", t: "Temiz geri gelir.", a: "Bakımdan çıkmış, özenle paketlenmiş — kapına teslim. Seneye de giyersin.", href: "/siparis-takip", cta: "Takip Et →", ext: false },
+              { n: "01", img: "/generated/step-order.webp", alt: "Sipariş ver", t: "Fotoğraf at, fiyat al.", a: "WhatsApp'tan bir fotoğraf at. 10 dakikada fiyat verelim, karar tamamen sende.", href: `https://wa.me/${WHATSAPP}`, cta: "Fiyat Al →", ext: true },
+              { n: "02", img: "/generated/step-pickup.webp", alt: "Kurye kapıya gelir", t: "Kapıda teslim.", a: "Kuryemiz kapına geliyor. Sen hiçbir yere gitme, tek adım atma.", href: "/siparis", cta: "Sipariş Ver →", ext: false },
+              { n: "03", img: "/generated/step-clean.webp", alt: "Tertemiz teslim", t: "Temiz geri gelir.", a: "Bakımdan çıkmış, özenle paketlenmiş — kapına teslim. Seneye de giyersin.", href: "/siparis-takip", cta: "Takip Et →", ext: false },
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 80}>
                 <div className="rounded-3xl overflow-hidden border transition-all duration-300"

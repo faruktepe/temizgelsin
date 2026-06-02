@@ -258,7 +258,13 @@ async function main() {
   console.log(`    Strateji: close-up doku / süreç / atmosfer\n`);
 
   if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  for (const img of list) await generate(img);
+  for (let i = 0; i < list.length; i++) {
+    if (i > 0) {
+      process.stdout.write("    ⏳ 12 saniye bekleniyor (rate limit)...\n");
+      await sleep(12000);
+    }
+    await generate(list[i]);
+  }
 
   console.log("\n✅  Tamamlandı");
   console.log(`   Görseller: ${OUTPUT_DIR}`);
