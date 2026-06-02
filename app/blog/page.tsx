@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Nav from "@/components/Nav";
 
 export const metadata: Metadata = {
   title: "Ayakkabı Bakım & Temizlik Rehberi — Blog",
@@ -64,6 +65,7 @@ const DRK = "#2D1A2E";
 export default function BlogPage() {
   return (
     <div className="min-h-screen" style={{ background: BG, color: DRK }}>
+      <Nav active="/blog" />
       <div className="max-w-4xl mx-auto px-6 py-24 pt-32">
         <div className="mb-12">
           <p className="text-[10px] uppercase tracking-[0.4em] mb-3" style={{ color: `rgba(45,26,46,0.4)` }}>Bilgi Merkezi</p>
