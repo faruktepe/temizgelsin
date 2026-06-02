@@ -59,7 +59,7 @@ function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
 const HIZMETLER = [
   { slug: "temizlik-bakim",  no: "01", ad: "Temizlik & Bakım",   fiyat: "₺800+",   sure: "1-2 gün", accent: PRI,
     img: "/generated/servis-temizlik.webp",
-    aciklama: "Buhar temizlik, derin cila, bağcık değişimi dahil.",
+    aciklama: "Seneye de giyersin. Buhar temizlik, derin cila, UV sterilizasyon.",
     detaylar: ["Buhar ile derin temizlik","Profesyonel cila","Bağcık değişimi","UV sterilizasyon"] },
   { slug: "boya-restorasyon",no: "02", ad: "Boya & Restorasyon", fiyat: "₺1.200+", sure: "2-3 gün", accent: MUV,
     img: "/generated/servis-boya.webp",
@@ -402,7 +402,7 @@ export default function Home() {
 
             <Reveal delay={100}>
               <p className="text-base md:text-lg leading-relaxed mb-8 max-w-lg" style={{ color: `rgba(45,26,46,0.6)` }}>
-                Sneaker, deri, süet ya da klasik — ayakkabını kapından alıyoruz, profesyonel bakımdan geçiriyoruz ve sana tertemiz teslim ediyoruz.
+                Sneaker, deri, süet — hangi ayakkabı olursa olsun kapından alıyoruz, uzman ellerden geçiriyoruz. Seneye de giyersin.
               </p>
             </Reveal>
 
@@ -427,7 +427,7 @@ export default function Home() {
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
                   { val: 150, suf: "+",     label: "Mutlu müşteri" },
-                  { val: 7,   suf: " gün",  label: "Ort. teslim"  },
+                  { val: 2,   suf: " gün",  label: "Ort. teslim"  },
                   { val: 100, suf: "%",     label: "Memnuniyet"   },
                 ].map(s => (
                   <div key={s.label} className="py-3 px-2 sm:px-5 rounded-2xl text-center"
@@ -473,9 +473,9 @@ export default function Home() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
                       <p className="text-xs uppercase tracking-widest mb-1" style={{ color: `rgba(45,26,46,0.4)` }}>Hızlı başlangıç</p>
-                      <p className="text-base font-black" style={{ color: DRK }}>Fotoğraf gönder, fiyatı anında öğren.</p>
+                      <p className="text-base font-black" style={{ color: DRK }}>Bir fotoğraf at, 10 dakikada fiyat al.</p>
                     </div>
-                    <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer"
+                    <a href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Merhaba! Ayakkabımın fotoğrafını atıyorum, fiyat alabilir miyim?")}`} target="_blank" rel="noopener noreferrer"
                       className="shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all hover:opacity-90"
                       style={{ background: PRI, color: "#fff" }}>
                       WhatsApp&apos;tan Başla
@@ -638,9 +638,9 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {[
-              { n: "01", img: "/generated/step-1-photo.webp", alt: "Fotoğraf gönder", t: "Fotoğraf Gönder", a: "WhatsApp'tan ayakkabının fotoğrafını gönder. Anında fiyat verelim, karar senin.", href: `https://wa.me/${WHATSAPP}`, cta: "Fiyat Al →", ext: true },
-              { n: "02", img: "/generated/step-2-courier.webp", alt: "Kurye kapıya gelir", t: "Kapıda Teslim Et", a: "Kuryemiz kapına geliyor, kirli ayakkabıyı teslim alıyor. Sen hiçbir yere gitme.", href: "/siparis", cta: "Sipariş Ver →", ext: false },
-              { n: "03", img: "/generated/step-3-clean.webp", alt: "Tertemiz teslim", t: "Temiz Geri Al", a: "Profesyonel bakımdan sonra paketlenmiş ve tertemiz olarak kapına teslim ediyoruz.", href: "/siparis-takip", cta: "Takip Et →", ext: false },
+              { n: "01", img: "/generated/step-1-photo.webp", alt: "Fotoğraf gönder", t: "Fotoğraf at, fiyat al.", a: "WhatsApp'tan bir fotoğraf at. 10 dakikada fiyat verelim, karar tamamen sende.", href: `https://wa.me/${WHATSAPP}`, cta: "Fiyat Al →", ext: true },
+              { n: "02", img: "/generated/step-2-courier.webp", alt: "Kurye kapıya gelir", t: "Kapıda teslim.", a: "Kuryemiz kapına geliyor. Sen hiçbir yere gitme, tek adım atma.", href: "/siparis", cta: "Sipariş Ver →", ext: false },
+              { n: "03", img: "/generated/step-3-clean.webp", alt: "Tertemiz teslim", t: "Temiz geri gelir.", a: "Bakımdan çıkmış, özenle paketlenmiş — kapına teslim. Seneye de giyersin.", href: "/siparis-takip", cta: "Takip Et →", ext: false },
             ].map((s, i) => (
               <Reveal key={s.n} delay={i * 80}>
                 <div className="rounded-3xl overflow-hidden border transition-all duration-300"
