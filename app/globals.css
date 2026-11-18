@@ -16,8 +16,17 @@
 @theme inline {
   --color-background: #F5F0E8;
   --color-foreground: #2D1A2E;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* ── temizgelsin "Servis Fişi" sistemi (2026-11) ── */
+  --color-ink: #0E0E0E;
+  --color-paper: #F4F4F0;
+  --color-fog: #E3E3DD;
+  --color-volt: #2B4BFF;
+  --color-live: #17B857;
+
+  --font-sans: var(--font-grotesk);
+  --font-serif: var(--font-grotesk);
+  --font-mono: var(--font-jetbrains);
 }
 
 html, body {
@@ -46,10 +55,13 @@ button, a {
   color-scheme: light only;
 }
 
-button {
-  color: inherit;
-  -webkit-text-fill-color: currentColor;
-  cursor: pointer;
+/* base katmanında: Tailwind renk sınıfları (text-*) bunu ezebilsin */
+@layer base {
+  button {
+    color: inherit;
+    -webkit-text-fill-color: currentColor;
+    cursor: pointer;
+  }
 }
 
 a {
@@ -86,4 +98,22 @@ a {
 /* iOS mobil zoom engellemek için input font-size minimum 16px */
 input, textarea, select {
   font-size: 16px !important;
+}
+
+/* ── Servis Fişi yardımcıları ── */
+.tg-perfore {
+  background-image: radial-gradient(circle at 8px 0, transparent 7px, var(--color-ink) 7px 8.5px, transparent 8.5px);
+  background-size: 16px 9px;
+  background-repeat: repeat-x;
+}
+@keyframes tg-dolum {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.tg-dolum {
+  transform-origin: left;
+  animation: tg-dolum 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tg-dolum { animation: none; }
 }

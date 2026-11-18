@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { TELEFON } from "@/lib/iletisim";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "800", "900"],
-  variable: "--font-sans",
+const grotesk = Space_Grotesk({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "700"],
+  variable: "--font-grotesk",
+  display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-serif",
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "600"],
+  variable: "--font-jetbrains",
+  display: "swap",
 });
 
 const BASE_URL = "https://temizgelsin.com.tr";
@@ -136,7 +138,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       </head>
-      <body className={`${dmSans.variable} ${playfair.variable} ${dmSans.className}`} suppressHydrationWarning>
+      <body className={`${grotesk.variable} ${jetbrains.variable} ${grotesk.className}`} suppressHydrationWarning>
         {children}
       </body>
     </html>

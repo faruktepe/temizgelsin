@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-const PRI = "#5B2D6E";
-const MUV = "#BFA5B8";
-const STN = "#D4C5B0";
-const BG  = "#F5F0E8";
-const DRK = "#2D1A2E";
+const PRI = "#0E0E0E";
+const MUV = "#2B4BFF";
+const STN = "#0E0E0E";
+const BG  = "#F4F4F0";
+const DRK = "#0E0E0E";
 
 const NAV_LINKS = [
   { href: "/",              label: "Ana Sayfa"  },
@@ -23,18 +23,17 @@ function PromoBar() {
   const [visible, setVisible] = useState(true);
   if (!visible) return null;
   return (
-    <div className="w-full flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium relative"
-      style={{ background: DRK, color: MUV }}>
-      <span className="w-1.5 h-1.5 rounded-full shrink-0 animate-pulse" style={{ background: "#22c55e" }} />
+    <div className="w-full flex items-center justify-center gap-2 px-10 h-10 font-mono text-[11px] md:text-xs relative bg-ink text-paper/70 uppercase tracking-[0.08em]">
+      <span className="w-1.5 h-1.5 shrink-0 bg-live" aria-hidden="true" />
       <span>
         İlk siparişinde{" "}
-        <strong className="font-black" style={{ color: "#fff" }}>%20 indirim</strong>
-        {" "}— Kod:{" "}
-        <strong className="font-black tracking-wider" style={{ color: "#fff" }}>TEMİZ20</strong>
+        <strong className="font-semibold text-paper">%20 indirim</strong>
+        {" "}· Kod:{" "}
+        <strong className="font-semibold text-paper bg-volt px-1.5 py-0.5">TEMİZ20</strong>
       </span>
       <button onClick={() => setVisible(false)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:opacity-70 transition-opacity"
-        style={{ color: MUV }}>
+        aria-label="Kampanya şeridini kapat"
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-paper/60 hover:text-paper transition-colors">
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
           <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
@@ -87,13 +86,8 @@ export default function Nav({ active }: { active?: string }) {
 
       {/* ── ANA NAV ── */}
       <nav
-        className="relative px-6 md:px-10 lg:px-16 transition-shadow duration-300"
-        style={{
-          background: "rgba(248,244,255,0.97)",
-          backdropFilter: "blur(16px)",
-          borderBottom: `1px solid ${scrolled ? "rgba(91,45,110,0.1)" : "transparent"}`,
-          boxShadow: scrolled ? "0 4px 24px rgba(45,26,46,0.07)" : "none",
-        }}>
+        aria-label="Ana menü"
+        className={`relative px-5 md:px-10 bg-paper border-b-[1.5px] border-ink transition-shadow duration-300 ${scrolled ? "shadow-[0_4px_0_rgba(14,14,14,0.06)]" : ""}`}>
         <div className="flex items-center justify-between h-16 max-w-7xl mx-auto">
 
           {/* ── LOGO (sol) ── */}
@@ -101,22 +95,21 @@ export default function Nav({ active }: { active?: string }) {
             <img
               src="/temizgelsin-logo.png?v=1"
               alt="Temiz Gelsin"
-              style={{ height: "38px", width: "auto", objectFit: "contain", maxWidth: "148px" }}
+              width={148}
+              height={38}
+              className="h-8 w-auto brightness-0"
             />
           </Link>
 
           {/* ── LİNKLER (orta — sadece desktop) ── */}
-          <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 h-full">
             {NAV_LINKS.map(link => (
               <Link key={link.href} href={link.href}
-                className="relative px-4 py-2 text-sm rounded-xl transition-all duration-200"
-                style={isActive(link.href)
-                  ? { color: PRI, fontWeight: 700, background: `rgba(91,45,110,0.07)` }
-                  : { color: `rgba(45,26,46,0.6)`, fontWeight: 500 }}>
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={`relative h-full flex items-center px-3.5 text-sm font-bold transition-colors ${isActive(link.href) ? "text-ink" : "text-ink/55 hover:text-ink"}`}>
                 {link.label}
                 {isActive(link.href) && (
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                    style={{ background: PRI }} />
+                  <span className="absolute bottom-[-1.5px] left-3.5 right-3.5 h-[3px] bg-volt" aria-hidden="true" />
                 )}
               </Link>
             ))}
@@ -128,8 +121,7 @@ export default function Nav({ active }: { active?: string }) {
             {/* Desktop CTA */}
             {!user && (
               <Link href="/siparis"
-                className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02]"
-                style={{ background: PRI, color: "#fff", boxShadow: `0 4px 16px rgba(91,45,110,0.3)` }}>
+                className="hidden md:inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold bg-ink text-paper border-[1.5px] border-ink shadow-[3px_3px_0_var(--color-volt)] motion-safe:hover:-translate-y-0.5 transition-transform">
                 Sipariş Ver →
               </Link>
             )}
@@ -139,9 +131,9 @@ export default function Nav({ active }: { active?: string }) {
               <div className="relative hidden md:block">
                 <button
                   onClick={() => setDropOpen(!dropOpen)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-full border transition-all hover:opacity-80"
+                  className="flex items-center gap-2.5 px-3 py-2  border transition-all hover:opacity-80"
                   style={{ borderColor: STN, background: "transparent" }}>
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black"
+                  <div className="w-7 h-7  flex items-center justify-center text-[11px] font-black"
                     style={{ background: PRI, color: "#fff" }}>
                     {initials}
                   </div>
@@ -150,7 +142,7 @@ export default function Nav({ active }: { active?: string }) {
                   </span>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                     className={`transition-transform duration-200 ${dropOpen ? "rotate-180" : ""}`}>
-                    <path d="M2 4l4 4 4-4" stroke={`rgba(45,26,46,0.4)`} strokeWidth="1.5" strokeLinecap="round"/>
+                    <path d="M2 4l4 4 4-4" stroke={`rgba(14,14,14,0.4)`} strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </button>
 
@@ -159,15 +151,15 @@ export default function Nav({ active }: { active?: string }) {
                     {/* Backdrop */}
                     <div className="fixed inset-0 z-40" onClick={() => setDropOpen(false)} />
                     {/* Dropdown */}
-                    <div className="absolute right-0 top-full mt-2 w-60 rounded-2xl z-50 overflow-hidden"
-                      style={{ background: "#fff", border: `1px solid ${STN}`, boxShadow: "0 12px 40px rgba(45,26,46,0.14)" }}>
-                      <div className="px-4 py-3.5" style={{ background: `rgba(91,45,110,0.04)`, borderBottom: `1px solid ${STN}` }}>
+                    <div className="absolute right-0 top-full mt-2 w-60  z-50 overflow-hidden"
+                      style={{ background: "#fff", border: `1px solid ${STN}`, boxShadow: "0 12px 40px rgba(14,14,14,0.14)" }}>
+                      <div className="px-4 py-3.5" style={{ background: `rgba(14,14,14,0.04)`, borderBottom: `1px solid ${STN}` }}>
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black shrink-0"
+                          <div className="w-8 h-8  flex items-center justify-center text-[11px] font-black shrink-0"
                             style={{ background: PRI, color: "#fff" }}>{initials}</div>
                           <div className="min-w-0">
                             <p className="text-sm font-bold truncate" style={{ color: DRK }}>{user.full_name ?? "Kullanıcı"}</p>
-                            <p className="text-[11px] truncate" style={{ color: `rgba(45,26,46,0.4)` }}>{user.email}</p>
+                            <p className="text-[11px] truncate" style={{ color: `rgba(14,14,14,0.4)` }}>{user.email}</p>
                           </div>
                         </div>
                       </div>
@@ -177,18 +169,18 @@ export default function Nav({ active }: { active?: string }) {
                           { href: "/siparislerim",label: "Siparişlerim", sub: "Geçmiş siparişler" },
                         ].map(item => (
                           <Link key={item.href} href={item.href} onClick={() => setDropOpen(false)}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all hover:opacity-80"
+                            className="flex items-center gap-3 px-3 py-2.5  text-sm transition-all hover:opacity-80"
                             style={{ color: DRK }}>
                             <div className="flex-1">
                               <p className="font-semibold text-sm" style={{ color: DRK }}>{item.label}</p>
-                              <p className="text-[11px]" style={{ color: `rgba(45,26,46,0.4)` }}>{item.sub}</p>
+                              <p className="text-[11px]" style={{ color: `rgba(14,14,14,0.4)` }}>{item.sub}</p>
                             </div>
                           </Link>
                         ))}
                       </div>
                       <div className="p-2 pt-0" style={{ borderTop: `1px solid ${STN}` }}>
                         <button onClick={handleCikis}
-                          className="flex items-center gap-2 w-full px-3 py-2.5 mt-1 rounded-xl text-sm font-medium transition-all hover:opacity-80"
+                          className="flex items-center gap-2 w-full px-3 py-2.5 mt-1  text-sm font-medium transition-all hover:opacity-80"
                           style={{ background: `rgba(107,39,55,0.05)`, color: `rgba(107,39,55,0.85)` }}>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -208,13 +200,13 @@ export default function Nav({ active }: { active?: string }) {
             <button
               onClick={() => setOpen(!open)}
               aria-label="Menüyü aç"
-              className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-[5px] rounded-xl transition-colors"
-              style={{ background: open ? `rgba(91,45,110,0.09)` : "transparent" }}>
-              <span className={`block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${open ? "rotate-45 translate-y-[6.5px]" : ""}`}
+              className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-[5px]  transition-colors"
+              style={{ background: open ? `rgba(14,14,14,0.09)` : "transparent" }}>
+              <span className={`block w-[18px] h-[1.5px]  transition-all duration-300 origin-center ${open ? "rotate-45 translate-y-[6.5px]" : ""}`}
                 style={{ background: DRK }} />
-              <span className={`block w-[18px] h-[1.5px] rounded-full transition-all duration-200 ${open ? "opacity-0 scale-x-0" : ""}`}
+              <span className={`block w-[18px] h-[1.5px]  transition-all duration-200 ${open ? "opacity-0 scale-x-0" : ""}`}
                 style={{ background: DRK }} />
-              <span className={`block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center ${open ? "-rotate-45 -translate-y-[6.5px]" : ""}`}
+              <span className={`block w-[18px] h-[1.5px]  transition-all duration-300 origin-center ${open ? "-rotate-45 -translate-y-[6.5px]" : ""}`}
                 style={{ background: DRK }} />
             </button>
           </div>
@@ -224,16 +216,16 @@ export default function Nav({ active }: { active?: string }) {
       {/* ── MOBİL MENÜ ── */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${open ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"}`}
-        style={{ background: BG, borderBottom: open ? `1px solid ${STN}` : "none", boxShadow: open ? "0 12px 32px rgba(45,26,46,0.12)" : "none" }}>
+        style={{ background: BG, borderBottom: open ? `1px solid ${STN}` : "none", boxShadow: open ? "0 12px 32px rgba(14,14,14,0.12)" : "none" }}>
         <div className="px-6 py-5 space-y-1">
           {NAV_LINKS.map(link => (
             <Link key={link.href} href={link.href} onClick={() => setOpen(false)}
-              className="flex items-center px-4 py-3 rounded-xl text-sm transition-all"
+              className="flex items-center px-4 py-3  text-sm transition-all"
               style={isActive(link.href)
-                ? { color: PRI, background: `rgba(91,45,110,0.08)`, fontWeight: 700 }
-                : { color: `rgba(45,26,46,0.65)`, fontWeight: 500 }}>
+                ? { color: PRI, background: `rgba(14,14,14,0.08)`, fontWeight: 700 }
+                : { color: `rgba(14,14,14,0.65)`, fontWeight: 500 }}>
               {link.label}
-              {isActive(link.href) && <span className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: PRI }} />}
+              {isActive(link.href) && <span className="ml-auto w-1.5 h-1.5 " style={{ background: PRI }} />}
             </Link>
           ))}
 
@@ -241,14 +233,14 @@ export default function Nav({ active }: { active?: string }) {
             {user ? (
               <>
                 <Link href="/profil" onClick={() => setOpen(false)}
-                  className="flex items-center gap-2.5 w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all"
-                  style={{ background: `rgba(91,45,110,0.06)`, color: DRK }}>
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
+                  className="flex items-center gap-2.5 w-full px-4 py-3 text-sm font-semibold  transition-all"
+                  style={{ background: `rgba(14,14,14,0.06)`, color: DRK }}>
+                  <div className="w-7 h-7  flex items-center justify-center text-[10px] font-black shrink-0"
                     style={{ background: PRI, color: "#fff" }}>{initials}</div>
                   {user.full_name?.split(" ")[0] ?? user.email?.split("@")[0]}
                 </Link>
                 <button onClick={() => { handleCikis(); setOpen(false); }}
-                  className="w-full px-4 py-3 text-sm font-semibold rounded-xl transition-all"
+                  className="w-full px-4 py-3 text-sm font-semibold  transition-all"
                   style={{ background: `rgba(107,39,55,0.06)`, color: `rgba(107,39,55,0.85)` }}>
                   Çıkış Yap
                 </button>
@@ -256,13 +248,13 @@ export default function Nav({ active }: { active?: string }) {
             ) : (
               <>
                 <Link href="/auth" onClick={() => setOpen(false)}
-                  className="flex items-center justify-center w-full py-3 text-sm font-semibold rounded-xl border-2 transition-all"
+                  className="flex items-center justify-center w-full py-3 text-sm font-semibold  border-2 transition-all"
                   style={{ borderColor: STN, color: DRK }}>
                   Giriş Yap
                 </Link>
                 <Link href="/siparis" onClick={() => setOpen(false)}
-                  className="flex items-center justify-center w-full py-3.5 text-sm font-bold rounded-xl hover:opacity-90 transition-all"
-                  style={{ background: PRI, color: "#fff", boxShadow: `0 4px 16px rgba(91,45,110,0.3)` }}>
+                  className="flex items-center justify-center w-full py-3.5 text-sm font-bold  hover:opacity-90 transition-all"
+                  style={{ background: PRI, color: "#fff", boxShadow: `0 4px 16px rgba(14,14,14,0.3)` }}>
                   Sipariş Ver →
                 </Link>
               </>
