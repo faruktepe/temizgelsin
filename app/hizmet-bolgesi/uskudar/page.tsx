@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TELEFON, WHATSAPP_URL } from "@/lib/iletisim";
 
 export const metadata: Metadata = {
   title: "Üsküdar Ayakkabı Temizleme & Bakım Servisi | Temiz Gelsin",
@@ -12,7 +13,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   name: "Temiz Gelsin — Üsküdar Ayakkabı Bakım Servisi",
   url: "https://temizgelsin.com.tr/hizmet-bolgesi/uskudar",
-  telephone: "+905319623790",
+  telephone: TELEFON,
   areaServed: { "@type": "City", name: "Üsküdar" },
   address: { "@type": "PostalAddress", addressLocality: "Üsküdar", addressRegion: "İstanbul", addressCountry: "TR" },
 };
@@ -44,7 +45,7 @@ export default function ÜsküdarÜsküdarPage() {
           <Link href="/siparis" className="flex-1 py-4 text-center rounded-2xl text-sm font-bold hover:opacity-90 transition-all" style={{ background: PRI, color: "#fff" }}>
             Üsküdar Sipariş Ver →
           </Link>
-          <a href="https://wa.me/905319623790" target="_blank" rel="noopener noreferrer"
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
             className="flex-1 py-4 text-center rounded-2xl text-sm font-bold border-2 hover:opacity-80 transition-all"
             style={{ borderColor: PRI, color: PRI }}>
             WhatsApp'tan Sor

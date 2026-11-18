@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { TELEFON } from "@/lib/iletisim";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -82,7 +83,7 @@ const localBusinessSchema = {
   name: "Temiz Gelsin",
   description: "İstanbul Anadolu yakasında kapıdan kapıya profesyonel ayakkabı temizleme, bakım ve onarım servisi.",
   url: BASE_URL,
-  telephone: "+905319623790",
+  telephone: TELEFON,
   priceRange: "₺₺",
   image: `${BASE_URL}/temizgelsin-logo.png`,
   logo: `${BASE_URL}/temizgelsin-logo.png`,

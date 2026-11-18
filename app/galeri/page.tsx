@@ -9,7 +9,7 @@ const MUV = "#BFA5B8";
 const STN = "#D4C5B0";
 const BG  = "#F5F0E8";
 const DRK = "#2D1A2E";
-const WHATSAPP = "905319623790";
+import { WHATSAPP } from "@/lib/iletisim";
 
 type GalleryItem = { id:string; title:string; category:string; service:string; district:string; before_url:string|null; after_url:string|null; };
 

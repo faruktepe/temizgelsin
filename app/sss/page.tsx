@@ -9,7 +9,7 @@ const MUV = "#BFA5B8";
 const STN = "#D4C5B0";
 const BG  = "#F5F0E8";
 const DRK = "#2D1A2E";
-const WHATSAPP = "905319623790";
+import { WHATSAPP } from "@/lib/iletisim";
 
 const SSS_DATA = [
   { s:"Hangi bölgelere hizmet veriyorsunuz?",    c:"Şu an Kadıköy, Üsküdar, Ataşehir ve Ümraniye'de hizmet veriyoruz. Yakında tüm Anadolu Yakası'na genişliyoruz!" },
